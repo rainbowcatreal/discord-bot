@@ -13,7 +13,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 # Токены
-load_dotenv(dotenv_path='/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/.env')
+load_dotenv(dotenv_path='/storage/emulated/0/pydroid/bot/.env')
 token = os.getenv('BOT_TOKEN')
 cat_token = os.getenv('CATAPITOKEN')
 dog_token = os.getenv('DOGAPITOKEN')
