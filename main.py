@@ -62,7 +62,14 @@ def update_balance(user_id, cash=None, bank=None):
 # Команды
 @bot.hybrid_command(name='help', description='Отображает справку')
 async def help(ctx):
-    await ctx.reply('работает!', mention_author=False)
+    embed = discord.Embed()
+    for command in bot.commands:
+        embed.add_field(
+            name=f'**{bot.command_prefix}{command.name}**',
+            value=command.help or command.description or '*Забыли описание указать :D*',
+            inline=True
+        )
+    await ctx.reply(embed=embed, mention_author=False)
 
 @bot.hybrid_command(name='cat', description='Присылает рандомного кота')
 async def cat(ctx):
@@ -213,7 +220,7 @@ def safe_eval(expr):
     node = ast.parse(expr, mode='eval').body
     return _eval(node)
 
-@bot.hybrid_command(name='calc', dscription='Вычисляет выражение')
+@bot.hybrid_command(name='calc', description='Вычисляет выражение')
 async def calc(ctx, *, expression: str):
     try:
         result = safe_eval(expression)
@@ -252,8 +259,12 @@ async def say(ctx, *, msg):
 # События
 @bot.event
 async def on_ready():
-    await bot.tree.sync()
     print(f'Бот {bot.user} теперь включён')
+    try:
+        commands = await bot.tree.sync()
+        print(f'{len(commands)} команд синхронизировано')
+    except:
+        print('Что-то пошло не так при синхронизации...')
 
 # Разрешить вебхукам использовать команды
 @bot.event
